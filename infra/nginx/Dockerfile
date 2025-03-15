@@ -1,4 +1,4 @@
-FROM nginx:1.26-alpine
+FROM nginx:1.27-alpine
 
 WORKDIR /var/www/html
 ENV TZ=Asia/Tokyo

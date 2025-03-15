@@ -1,6 +1,6 @@
 services:
-  app:
-    container_name: app
+  quiz_manager_app:
+    container_name: quiz_manager_app
     build:
       context: .
       dockerfile: ./infra/php/Dockerfile
@@ -8,8 +8,8 @@ services:
       - ./backend:/var/www/html
       - ./infra/php/php.ini:/usr/local/etc/php/php.ini
 
-  web:
-    container_name: web
+  quiz_manager_web:
+    container_name: quiz_manager_web
     build:
       context: .
       dockerfile: ./infra/nginx/Dockerfile
@@ -17,13 +17,13 @@ services:
       - "8000:80"
       - "3000:3000"
     depends_on:
-      - app
+      - quiz_manager_app
     volumes:
       - ./infra/nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./backend:/var/www/html
 
-  db:
-    container_name: db
+  quiz_manager_db:
+    container_name: quiz_manager_db
     build:
       context: .
       dockerfile: ./infra/mysql/Dockerfile
@@ -37,10 +37,10 @@ services:
       MYSQL_ROOT_PASSWORD: secretapp
       TZ: "Asia/Tokyo"
     volumes:
-      - mysql-volume:/var/lib/mysql
+      - quiz-mysql-volume:/var/lib/mysql
 
-  db_test:
-    container_name: db_test
+  quiz_manager_db_test:
+    container_name: quiz_manager_db_test
     build:
       context: .
       dockerfile: ./infra/mysql/Dockerfile
@@ -52,19 +52,19 @@ services:
       MYSQL_ROOT_PASSWORD: secretapp
       TZ: "Asia/Tokyo"
     depends_on:
-      - db
+      - quiz_manager_db
 
-  phpmyadmin:
+  phpmyadmin_quiz:
     image: phpmyadmin/phpmyadmin
     platform: linux/x86_64
     environment:
-      PMA_HOST: db
+      PMA_HOST: quiz_manager_db
       PMA_USER: root
       PMA_PASSWORD: secretapp
     ports:
       - "8080:80"
     depends_on:
-      - db
+      - quiz_manager_db
 
 volumes:
-  mysql-volume:
+  quiz-mysql-volume:

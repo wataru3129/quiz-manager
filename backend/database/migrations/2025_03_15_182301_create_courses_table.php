@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnUpdate();
             $table->string('title');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();

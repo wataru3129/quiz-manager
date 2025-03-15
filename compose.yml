@@ -39,6 +39,18 @@ services:
     volumes:
       - quiz-mysql-volume:/var/lib/mysql
 
+  phpmyadmin_quiz:
+    image: phpmyadmin/phpmyadmin
+    platform: linux/x86_64
+    environment:
+      PMA_HOST: quiz_manager_db
+      PMA_USER: root
+      PMA_PASSWORD: secretapp
+    ports:
+      - "8080:80"
+    depends_on:
+      - quiz_manager_db
+
   quiz_manager_db_test:
     container_name: quiz_manager_db_test
     build:
@@ -52,18 +64,7 @@ services:
       MYSQL_ROOT_PASSWORD: secretapp
       TZ: "Asia/Tokyo"
     depends_on:
-      - quiz_manager_db
-
-  phpmyadmin_quiz:
-    image: phpmyadmin/phpmyadmin
-    platform: linux/x86_64
-    environment:
-      PMA_HOST: quiz_manager_db
-      PMA_USER: root
-      PMA_PASSWORD: secretapp
-    ports:
-      - "8080:80"
-    depends_on:
+      - phpmyadmin_quiz
       - quiz_manager_db
 
 volumes:

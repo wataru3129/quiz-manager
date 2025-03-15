@@ -1,0 +1,70 @@
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: ./infra/php/Dockerfile
+    volumes:
+      - ./backend:/var/www/html
+      - ./infra/php/php.ini:/usr/local/etc/php/php.ini
+
+  web:
+    container_name: web
+    build:
+      context: .
+      dockerfile: ./infra/nginx/Dockerfile
+    ports:
+      - "8000:80"
+      - "3000:3000"
+    depends_on:
+      - app
+    volumes:
+      - ./infra/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./backend:/var/www/html
+
+  db:
+    container_name: db
+    build:
+      context: .
+      dockerfile: ./infra/mysql/Dockerfile
+    platform: linux/x86_64
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: quiz-manager
+      MYSQL_USER: quiz-manager
+      MYSQL_PASSWORD: secretapp
+      MYSQL_ROOT_PASSWORD: secretapp
+      TZ: "Asia/Tokyo"
+    volumes:
+      - mysql-volume:/var/lib/mysql
+
+  db_test:
+    container_name: db_test
+    build:
+      context: .
+      dockerfile: ./infra/mysql/Dockerfile
+    platform: linux/x86_64
+    environment:
+      MYSQL_DATABASE: test_quiz-manager
+      MYSQL_USER: test_quiz-manager
+      MYSQL_PASSWORD: secretapp
+      MYSQL_ROOT_PASSWORD: secretapp
+      TZ: "Asia/Tokyo"
+    depends_on:
+      - db
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    platform: linux/x86_64
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: secretapp
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+volumes:
+  mysql-volume:

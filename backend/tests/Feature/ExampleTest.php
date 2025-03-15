@@ -2,18 +2,23 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User;
 
-class ExampleTest extends TestCase
-{
-    /**
-     * A basic test example.
-     */
-    public function test_the_application_returns_a_successful_response(): void
-    {
-        $response = $this->get('/');
+uses(RefreshDatabase::class);
 
-        $response->assertStatus(200);
-    }
-}
+beforeEach(function () {
+    $this->artisan('migrate:fresh');
+
+    User::factory()->create([
+        'name' => 'test_db',
+        'email' => 'test_db@test.com',
+        'email_verified_at' => now(),
+        'password' => Hash::make('password'),
+    ]);
+});
+
+it('should create a new User', function () {
+    $this->assertDatabaseCount('users', 1);
+});

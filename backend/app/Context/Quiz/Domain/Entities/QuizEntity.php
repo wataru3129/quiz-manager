@@ -9,58 +9,93 @@ class QuizEntity implements QuizEntityInterface
 {
 
     /**
-     * @inheritDoc
+     * @var int|null $id Quiz Table ID
      */
-    public function getId (): int
-    {
-        // TODO: Implement getId() method.
+    private ?int $id {
+        get {
+            return $this->id;
+        }
     }
 
     /**
-     * @inheritDoc
+     * @var string $question 問題
      */
-    public function getQuestion (): string
-    {
-        // TODO: Implement getQuestion() method.
+    private string $question {
+        get {
+            return $this->question;
+        }
     }
 
     /**
-     * @inheritDoc
+     * @var string $unit 単位
      */
-    public function getUnit (): string
-    {
-        // TODO: Implement getUnit() method.
+    private string $unit {
+        get {
+            return $this->unit;
+        }
     }
 
     /**
-     * @inheritDoc
+     * @var string $course コース
      */
-    public function getCourse (): string
-    {
-        // TODO: Implement getCourse() method.
+    private string $course {
+        get {
+            return $this->course;
+        }
     }
 
     /**
-     * @inheritDoc
+     * @var Collection $answers 回答
      */
-    public function getAnswers (): Collection
-    {
-        // TODO: Implement getAnswers() method.
+    private Collection $answers {
+        get {
+            return $this->answers;
+        }
     }
 
     /**
-     * @inheritDoc
-     */
-    public function getIsTwoMultiple (): bool
-    {
-        // TODO: Implement getIsTwoMultiple() method.
+    * @var bool $isTwoMultiple 2択問題フラグ
+    */
+    private bool $isTwoMultiple {
+        get {
+            return $this->isTwoMultiple;
+        }
     }
 
     /**
-     * @inheritDoc
+     * @var bool $twoMultipleAnswer 2択問題の回答
      */
-    public function getTwoMultipleAnswer (): bool
-    {
-        // TODO: Implement getTwoMultipleAnswer() method.
+    private bool $twoMultipleAnswer {
+        get {
+            return $this->twoMultipleAnswer;
+        }
+    }
+
+    /**
+     * QuizEntity constructor
+     * @param string $question
+     * @param string $unit
+     * @param string $course
+     * @param Collection $answers
+     * @param bool $isTwoMultiple
+     * @param bool $twoMultipleAnswer
+     * @param int|null $id
+     */
+    public function __construct(
+        string $question,
+        string $unit,
+        string $course,
+        Collection $answers,
+        bool $isTwoMultiple,
+        bool $twoMultipleAnswer,
+        ?int $id = null
+    ) {
+        $this->question = $question;
+        $this->unit = $unit;
+        $this->course = $course;
+        $this->answers = $answers;
+        $this->isTwoMultiple = $isTwoMultiple;
+        $this->twoMultipleAnswer = $twoMultipleAnswer;
+        $this->id = $id;
     }
 }
